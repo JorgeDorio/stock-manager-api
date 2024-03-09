@@ -1,5 +1,6 @@
 using App.v1.DTOs.Company.Create;
 using App.v1.DTOs.Company.Edit;
+using App.v1.DTOs.Company.GetAll;
 using App.v1.Models;
 using App.v1.Services;
 using AutoMapper;
@@ -33,9 +34,9 @@ public class CompanyController(IMapper mapper, CompanyService companyService) : 
     }
 
     [HttpGet]
-    public async Task<IEnumerable<Company>> GetCompanies()
+    public async Task<GetAllCompaniesResponse> GetCompanies([FromQuery] Pagination pagination)
     {
-        var result = await _companyService.GetCompanies();
+        var result = await _companyService.GetCompanies(pagination);
         return result;
     }
 

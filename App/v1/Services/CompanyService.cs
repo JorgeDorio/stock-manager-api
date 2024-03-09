@@ -1,4 +1,5 @@
 using App.v1.Context;
+using App.v1.DTOs.Company.GetAll;
 using App.v1.Models;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -32,10 +33,14 @@ public class CompanyService(StockContext context)
         }
     }
 
-    public async Task<IEnumerable<Company>> GetCompanies()
+    public async Task<GetAllCompaniesResponse> GetCompanies(Pagination pagination)
     {
-        var companies = await _context.Companies.ToListAsync();
-        return companies;
+        var query = _context.Companies.AsQueryable();
+        pagination.TotalItems = await query.CountAsync();
+
+        var companies = await query.Skip(pagination.ItemsPerPage * (pagination.CurrentPage - 1)).Take(pagination.ItemsPerPage).ToListAsync();
+
+        return new(companies, pagination);
     }
 
     public async Task RemoveCompany(long id)
