@@ -30,6 +30,12 @@ public class AuthService
         return handler.WriteToken(token);
     }
 
+    public JwtSecurityToken DecodeToken(string token)
+    {
+        var handler = new JwtSecurityTokenHandler();
+        return handler.ReadJwtToken(token);
+    }
+
     public string Hash(string value)
     {
         var sha1 = SHA1.Create();

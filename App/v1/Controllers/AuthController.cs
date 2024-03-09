@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using App.v1.DTOs.Auth.Login;
 using App.v1.Models;
 using App.v1.Services;
@@ -8,9 +9,10 @@ namespace App.v1.Controllers;
 
 [Route("v1/[controller]")]
 [ApiController]
-public class AuthController(UserService userService, IMapper mapper) : ControllerBase
+public class AuthController(UserService userService, IMapper mapper, AuthService authService) : ControllerBase
 {
     private readonly UserService _userService = userService;
+    private readonly AuthService _authService = authService;
     private readonly IMapper _mapper = mapper;
 
     [HttpPost("Login")]
@@ -21,5 +23,11 @@ public class AuthController(UserService userService, IMapper mapper) : Controlle
         var response = await _userService.Login(user);
 
         return response;
+    }
+
+    [HttpGet("{token}")]
+    public async Task<JwtPayload> DecodeToken(string token)
+    {
+        return _authService.DecodeToken(token).Payload;
     }
 }
