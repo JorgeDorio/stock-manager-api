@@ -13,7 +13,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<AuthService>();
 builder.Services.AddTransient<UserService>();
+builder.Services.AddTransient<CompanyService>();
 builder.Services.AddAutoMapper(typeof(UserProfile));
+builder.Services.AddAutoMapper(typeof(CompanyProfile));
 
 var app = builder.Build();
 
