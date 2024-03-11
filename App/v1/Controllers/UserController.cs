@@ -23,4 +23,17 @@ public class UserController(UserService userService, IMapper mapper) : Controlle
 
         return result;
     }
+
+    [HttpGet]
+    public async Task<object> GetAllUsers()
+    {
+        var result = await _userService.GetAllUsers();
+        return result;
+    }
+
+    [HttpPost("invite")]
+    public async Task InviteUser(InviteUserRequest inviteUserRequest)
+    {
+        await _userService.InviteUser(inviteUserRequest);
+    }
 }

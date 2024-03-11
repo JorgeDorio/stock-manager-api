@@ -1,5 +1,6 @@
 using App.v1.DTOs.Company.Create;
 using App.v1.DTOs.Company.Edit;
+using App.v1.DTOs.Company.GetNameAndId;
 using App.v1.Models;
 using AutoMapper;
 
@@ -12,5 +13,6 @@ public class CompanyProfile : Profile
         CreateMap<CreateCompanyRequest, Company>();
         CreateMap<Company, CreateCompanyResponse>();
         CreateMap<EditCompanyRequest, Company>();
+        CreateMap<IEnumerable<Company>, IEnumerable<GetNamesAndIdsResponse>>();
     }
 }

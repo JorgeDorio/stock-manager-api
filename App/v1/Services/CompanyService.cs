@@ -1,14 +1,16 @@
 using App.v1.Context;
 using App.v1.DTOs.Company.GetAll;
+using App.v1.DTOs.Company.GetNameAndId;
 using App.v1.Models;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.v1.Services;
 
-public class CompanyService(StockContext context)
+public class CompanyService(StockContext context, IMapper mapper)
 {
     private readonly StockContext _context = context;
+    private readonly IMapper _mapper = mapper;
 
     public async Task<Company> CreateCompany(Company company)
     {
@@ -38,7 +40,7 @@ public class CompanyService(StockContext context)
         var query = _context.Companies.AsQueryable();
         pagination.TotalItems = await query.CountAsync();
 
-        var companies = await query.Skip(pagination.ItemsPerPage * (pagination.CurrentPage - 1)).Take(pagination.ItemsPerPage).ToListAsync();
+        var companies = await query.OrderByDescending(c => c.Id).Skip(pagination.ItemsPerPage * (pagination.CurrentPage - 1)).Take(pagination.ItemsPerPage).ToListAsync();
 
         return new(companies, pagination);
     }
@@ -53,5 +55,12 @@ public class CompanyService(StockContext context)
 
             await _context.SaveChangesAsync();
         }
+    }
+
+    public async Task<object> GetNamesAndIds()
+    {
+        var companies = await _context.Companies.Select(e => new { e.TradeName, e.Id }).ToListAsync();
+
+        return companies;
     }
 }

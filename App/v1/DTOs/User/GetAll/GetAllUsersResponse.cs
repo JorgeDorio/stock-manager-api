@@ -1,13 +1,9 @@
-namespace App.v1.Models;
+namespace App.v1.DTOs.User.GetAll;
 
-public class User
-{
+public class GetAllUsersResponse{
     public long Id { get; set; }
     public required string Name { get; set; }
     public required string Email { get; set; }
-    public required string Secret { get; set; }
     public bool IsActive { get; set; } = true;
     public required string[] Roles { get; set; } = [];
-    public long CompanyId { get; set; }
-    public Company Company { get; set; }
 }

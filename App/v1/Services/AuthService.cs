@@ -7,6 +7,7 @@ namespace App.v1.Services;
 
 using System.Security.Claims;
 using System.Security.Cryptography;
+using App.v1.DTOs.User;
 using Configuration;
 public class AuthService
 {
@@ -23,6 +24,26 @@ public class AuthService
             SigningCredentials = credentials,
             Expires = DateTime.UtcNow.AddHours(8),
             Subject = GenerateClaims(user)
+        };
+
+        var token = handler.CreateToken(tokenDescriptor);
+
+        return handler.WriteToken(token);
+    }
+
+    public string GenerateInviteToken(InviteUserRequest invite, string tradeName)
+    {
+        var handler = new JwtSecurityTokenHandler();
+
+        var key = Encoding.ASCII.GetBytes(Configuration.PrivateKay);
+
+        var credentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature);
+
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            SigningCredentials = credentials,
+            Expires = DateTime.UtcNow.AddHours(8),
+            Subject = GenerateInviteClaims(invite, tradeName)
         };
 
         var token = handler.CreateToken(tokenDescriptor);
@@ -64,6 +85,17 @@ public class AuthService
 
         ci.AddClaim(new Claim(ClaimTypes.Name, user.Name));
         foreach (var role in user.Roles) ci.AddClaim(new Claim(ClaimTypes.Role, role));
+
+        return ci;
+    }
+
+    private static ClaimsIdentity GenerateInviteClaims(InviteUserRequest invite, string tradeName)
+    {
+        var ci = new ClaimsIdentity();
+
+        ci.AddClaim(new Claim("email", invite.Email));
+        ci.AddClaim(new Claim("companyId", invite.CompanyId.ToString()));
+        ci.AddClaim(new Claim("tradeName", tradeName));
 
         return ci;
     }
