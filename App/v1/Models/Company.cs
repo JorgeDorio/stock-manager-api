@@ -7,5 +7,5 @@ public class Company
     public required string LegalName { get; set; }
     public required string Cnpj { get; set; }
     public bool IsActive { get; set; } = true;
-    public ICollection<User> Users { get; set; }
+    public ICollection<User>? Users { get; set; }
 }

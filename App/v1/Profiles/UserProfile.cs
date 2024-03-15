@@ -1,5 +1,6 @@
 using App.v1.DTOs.Auth.Login;
 using App.v1.DTOs.User;
+using App.v1.DTOs.User.Edit;
 using App.v1.Models;
 using AutoMapper;
 
@@ -10,5 +11,6 @@ public class UserProfile : Profile{
     {
         CreateMap<LoginDTORequest, User>();
         CreateMap<CreateUserDTO, User>();
+        CreateMap<EditUserRequest, User>();
     }
 }

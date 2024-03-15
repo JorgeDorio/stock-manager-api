@@ -1,4 +1,5 @@
 using App.v1.Context;
+using App.v1.Middlewares;
 using App.v1.Profiles;
 using App.v1.Services;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +33,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.UseCors((opt) => opt.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+
+app.UseMiddleware<TokenValidationMiddleware>();
 
 app.MapControllers();
 

@@ -1,6 +1,5 @@
 using App.v1.Context;
 using App.v1.DTOs.Company.GetAll;
-using App.v1.DTOs.Company.GetNameAndId;
 using App.v1.Models;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;

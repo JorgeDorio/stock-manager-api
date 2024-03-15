@@ -26,7 +26,7 @@ public class AuthController(UserService userService, IMapper mapper, AuthService
     }
 
     [HttpGet("{token}")]
-    public async Task<JwtPayload> DecodeToken(string token)
+    public JwtPayload DecodeToken(string token)
     {
         return _authService.DecodeToken(token).Payload;
     }

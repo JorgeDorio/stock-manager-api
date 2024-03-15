@@ -54,6 +54,7 @@ public class AuthService
     public JwtSecurityToken DecodeToken(string token)
     {
         var handler = new JwtSecurityTokenHandler();
+
         return handler.ReadJwtToken(token);
     }
 
@@ -84,7 +85,9 @@ public class AuthService
         var ci = new ClaimsIdentity();
 
         ci.AddClaim(new Claim(ClaimTypes.Name, user.Name));
-        foreach (var role in user.Roles) ci.AddClaim(new Claim(ClaimTypes.Role, role));
+        ci.AddClaim(new Claim("userId", user.Id.ToString()));
+        ci.AddClaim(new Claim("companyId", user.CompanyId.ToString()));
+        ci.AddClaim(new Claim(ClaimTypes.Role, user.Role.ToString()));
 
         return ci;
     }

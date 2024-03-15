@@ -7,6 +7,7 @@ public class StockContext(DbContextOptions<StockContext> options) : DbContext(op
 {
     public DbSet<User> Users { get; set; }
     public DbSet<Company> Companies { get; set; }
+    public DbSet<Invite> Invites { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

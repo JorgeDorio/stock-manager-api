@@ -1,5 +1,3 @@
-using Humanizer;
-
 namespace App.v1.Models;
 
 public class Mail

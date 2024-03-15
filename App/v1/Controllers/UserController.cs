@@ -1,5 +1,6 @@
-using App.v1.DTOs.Auth;
 using App.v1.DTOs.User;
+using App.v1.DTOs.User.Edit;
+using App.v1.Enums;
 using App.v1.Models;
 using App.v1.Services;
 using AutoMapper;
@@ -27,7 +28,10 @@ public class UserController(UserService userService, IMapper mapper) : Controlle
     [HttpGet]
     public async Task<object> GetAllUsers()
     {
-        var result = await _userService.GetAllUsers();
+        var role = HttpContext.Items["role"].ToString();
+        var companyId = long.Parse(HttpContext.Items["companyId"].ToString());
+
+        var result = await _userService.GetAllUsers(role, companyId);
         return result;
     }
 
@@ -35,5 +39,12 @@ public class UserController(UserService userService, IMapper mapper) : Controlle
     public async Task InviteUser(InviteUserRequest inviteUserRequest)
     {
         await _userService.InviteUser(inviteUserRequest);
+    }
+
+    [HttpPut]
+    public async Task EditUser(EditUserRequest editUserRequest)
+    {
+        var user = _mapper.Map<User>(editUserRequest);
+        await _userService.EditUser(user);
     }
 }

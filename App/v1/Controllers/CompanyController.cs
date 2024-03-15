@@ -1,7 +1,6 @@
 using App.v1.DTOs.Company.Create;
 using App.v1.DTOs.Company.Edit;
 using App.v1.DTOs.Company.GetAll;
-using App.v1.DTOs.Company.GetNameAndId;
 using App.v1.Models;
 using App.v1.Services;
 using AutoMapper;
