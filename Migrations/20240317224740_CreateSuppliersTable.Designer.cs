@@ -3,6 +3,7 @@ using App.v1.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace StockManager.Migrations
 {
     [DbContext(typeof(StockContext))]
-    partial class StockContextModelSnapshot : ModelSnapshot
+    [Migration("20240317224740_CreateSuppliersTable")]
+    partial class CreateSuppliersTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,44 +75,6 @@ namespace StockManager.Migrations
                     b.ToTable("Invites");
                 });
 
-            modelBuilder.Entity("App.v1.Models.Product", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Brand")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("CompanyId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Subcategory")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
-
-                    b.ToTable("Products");
-                });
-
             modelBuilder.Entity("App.v1.Models.Supplier", b =>
                 {
                     b.Property<long>("Id")
@@ -122,9 +87,6 @@ namespace StockManager.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("CompanyId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("LegalName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -134,8 +96,6 @@ namespace StockManager.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
 
                     b.ToTable("Suppliers");
                 });
@@ -176,28 +136,6 @@ namespace StockManager.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("App.v1.Models.Product", b =>
-                {
-                    b.HasOne("App.v1.Models.Company", "Company")
-                        .WithMany("Products")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Company");
-                });
-
-            modelBuilder.Entity("App.v1.Models.Supplier", b =>
-                {
-                    b.HasOne("App.v1.Models.Company", "Company")
-                        .WithMany("Suppliers")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Company");
-                });
-
             modelBuilder.Entity("App.v1.Models.User", b =>
                 {
                     b.HasOne("App.v1.Models.Company", "Company")
@@ -211,10 +149,6 @@ namespace StockManager.Migrations
 
             modelBuilder.Entity("App.v1.Models.Company", b =>
                 {
-                    b.Navigation("Products");
-
-                    b.Navigation("Suppliers");
-
                     b.Navigation("Users");
                 });
 #pragma warning restore 612, 618

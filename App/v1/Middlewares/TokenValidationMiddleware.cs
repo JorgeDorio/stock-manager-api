@@ -11,13 +11,19 @@ public class TokenValidationMiddleware(RequestDelegate next, AuthService authSer
 
     public async Task Invoke(HttpContext context)
     {
-        if (!context.Request.Path.Value.ToLower().Contains("auth"))
+        var path = context.Request.Path.Value ?? "";
+        if (!path.Contains("auth", StringComparison.CurrentCultureIgnoreCase))
         {
             try
             {
-                var decoded = _authService.DecodeToken(context.Request.Headers["token"]);
-                context.Items["role"] = decoded.Claims.FirstOrDefault(c => c.Type == "role").Value;
-                context.Items["companyId"] = decoded.Claims.FirstOrDefault(c => c.Type == "companyId").Value;
+                var token = context.Request.Headers["token"].ToString() ?? "";
+                var decoded = _authService.DecodeToken(token);
+
+                var role = decoded.Claims.FirstOrDefault(c => c.Type == "role") ?? throw new Exception();
+                context.Items["role"] = role.Value;
+
+                var companyId = decoded.Claims.FirstOrDefault(c => c.Type == "companyId") ?? throw new Exception();
+                context.Items["companyId"] = companyId.Value;
             }
             catch (Exception)
             {

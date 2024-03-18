@@ -6,10 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.v1.Services;
 
-public class CompanyService(StockContext context, IMapper mapper)
+public class CompanyService(StockContext context)
 {
     private readonly StockContext _context = context;
-    private readonly IMapper _mapper = mapper;
 
     public async Task<Company> CreateCompany(Company company)
     {

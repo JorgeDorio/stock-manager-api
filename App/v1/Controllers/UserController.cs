@@ -28,9 +28,15 @@ public class UserController(UserService userService, IMapper mapper) : Controlle
     [HttpGet]
     public async Task<object> GetAllUsers()
     {
-        var role = HttpContext.Items["role"].ToString();
-        var companyId = long.Parse(HttpContext.Items["companyId"].ToString());
+        var role = HttpContext.Items["role"]?.ToString();
+        var companyIdString = HttpContext.Items["companyId"]?.ToString();
 
+        if (role == null || companyIdString == null)
+        {
+            return BadRequest();
+        }
+
+        var companyId = long.Parse(companyIdString);
         var result = await _userService.GetAllUsers(role, companyId);
         return result;
     }

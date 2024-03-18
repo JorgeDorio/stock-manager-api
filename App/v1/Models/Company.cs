@@ -8,4 +8,6 @@ public class Company
     public required string Cnpj { get; set; }
     public bool IsActive { get; set; } = true;
     public ICollection<User>? Users { get; set; }
+    public ICollection<Supplier>? Suppliers { get; set; }
+    public ICollection<Product>? Products { get; set; }
 }
